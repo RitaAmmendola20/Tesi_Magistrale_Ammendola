@@ -245,6 +245,7 @@ def train_model(model, dataloader, epochs=20):
 # -----------------------------
 # Example usage
 # -----------------------------
+'''
 if __name__ == '__main__':
     dataset = EEGDataset(subject_ids=[1], runs=[1, 2], project_path=project_path)
     if len(dataset) == 0:
@@ -272,3 +273,4 @@ if __name__ == '__main__':
 
     model_path = os.path.join(project_path, 'dcae_sr_eeg_motor_imagery_subpixel.pth')
     torch.save(model.state_dict(), model_path)
+'''
