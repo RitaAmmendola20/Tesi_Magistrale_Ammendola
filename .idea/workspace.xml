@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3b6692a-aaf8-4d8c-913c-85a02c8dbecb" name="Changes" comment="commit 2: 21-10-25">
-      <change afterPath="$PROJECT_DIR$/pixelshuffle_batch_generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/standard_sr_batch_generator.py" afterDir="false" />
+    <list default="true" id="c3b6692a-aaf8-4d8c-913c-85a02c8dbecb" name="Changes" comment="commit 1: 27-10-25">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery.py" beforeDir="false" afterPath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery_subpixel.py" beforeDir="false" afterPath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery_subpixel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,35 +47,15 @@
   "keyToString": {
     "Python.main.executor": "Run",
     "Python.main2.executor": "Run",
+    "Python.metrics_calculator.executor": "Run",
     "Python.pixelshuffle_batch_generator (1).executor": "Run",
     "Python.standard_sr_batch_generator.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.pixelshuffle_batch_generator (1)">
-    <configuration name="dcae_sr_eeg_motor_imagery" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Tesi_Magistrale_Ammendola" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola\dcae_sr_eeg_motor_imagery.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.metrics_calculator">
     <configuration name="dcae_sr_eeg_motor_imagery_subpixel" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tesi_Magistrale_Ammendola" />
       <option name="ENV_FILES" value="" />
@@ -94,6 +70,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola\dcae_sr_eeg_motor_imagery_subpixel.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="metrics_calculator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Tesi_Magistrale_Ammendola" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/metrics_calculator.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -170,11 +168,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.metrics_calculator" />
         <item itemvalue="Python.pixelshuffle_batch_generator (1)" />
         <item itemvalue="Python.standard_sr_batch_generator" />
         <item itemvalue="Python.pixelshuffle_batch_generator" />
         <item itemvalue="Python.dcae_sr_eeg_motor_imagery_subpixel" />
-        <item itemvalue="Python.dcae_sr_eeg_motor_imagery" />
       </list>
     </recent_temporary>
   </component>
@@ -218,13 +216,31 @@
       <option name="project" value="LOCAL" />
       <updated>1761057729507</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="commit 1: 23-10-25">
+      <option name="closed" value="true" />
+      <created>1761212215598</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1761212215598</updated>
+    </task>
+    <task id="LOCAL-00005" summary="commit 1: 27-10-25">
+      <option name="closed" value="true" />
+      <created>1761562440670</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1761562440670</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit" />
     <MESSAGE value="commit 1: 21-10-25" />
     <MESSAGE value="commit 2: 21-10-25" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit 2: 21-10-25" />
+    <MESSAGE value="commit 1: 23-10-25" />
+    <MESSAGE value="commit 1: 27-10-25" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit 1: 27-10-25" />
   </component>
 </project>
