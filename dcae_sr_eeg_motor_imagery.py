@@ -114,6 +114,64 @@ class DCAE_SR(nn.Module):
 
         return lr_recon, sr_recon
 
+# dcae_sr_eeg_motor_imagery.py
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class EncoderBlock(nn.Module):
+    def __init__(self, in_ch, out_ch, kernels, strides, drops):
+        super(EncoderBlock, self).__init__()
+        self.conv1 = nn.Conv1d(in_ch[0], out_ch[0], kernels[0], strides[0], padding=kernels[0]//2)
+        self.conv2 = nn.Conv1d(in_ch[1], out_ch[1], kernels[1], strides[1], padding=kernels[1]//2)
+        self.tanh = nn.Tanh()
+        self.dropout1 = nn.Dropout(drops[0])
+        self.dropout2 = nn.Dropout(drops[1])
+
+    def forward(self, x):
+        x = self.dropout1(self.tanh(self.conv1(x)))
+        x = self.dropout2(self.tanh(self.conv2(x)))
+        return x
+
+class DCAE_SR_Base(nn.Module):
+    def __init__(self, num_channels=64, lr_len=250, hr_len=2500):
+        super(DCAE_SR_Base, self).__init__()
+        self.num_channels = num_channels
+        self.lr_len = lr_len
+        self.hr_len = hr_len
+
+        self.encoder1 = EncoderBlock([num_channels, num_channels], [num_channels, 192], [3,3], [1,1], [0.1,0.1])
+        self.encoder2 = EncoderBlock([192, 384], [384, 768], [3,3], [1,1], [0.1,0.1])
+
+        self.bottleneck_conv = nn.Conv1d(768, 768, kernel_size=3, padding=1)
+        self.bottleneck_norm = nn.BatchNorm1d(768)
+        self.bottleneck_act = nn.ReLU(inplace=True)
+        self.bottleneck_drop = nn.Dropout(0.2)
+
+        self.decoder1 = nn.Conv1d(768, 384, kernel_size=3, padding=1)
+        self.final_conv_lr = nn.Conv1d(384, num_channels, kernel_size=3, padding=1)
+
+        self.decoder2 = nn.Conv1d(768, num_channels, kernel_size=3, padding=1)
+        self.final_conv_sr = nn.Conv1d(num_channels, num_channels, kernel_size=3, padding=1)
+
+    def forward(self, input_lr):
+        x = self.encoder1(input_lr)
+        x = self.encoder2(x)
+
+        residual = x
+        x = self.bottleneck_conv(x)
+        x = self.bottleneck_norm(x)
+        x = self.bottleneck_act(x)
+        x = x + residual
+
+        x_lr = self.decoder1(x)
+        lr_recon = self.final_conv_lr(x_lr)
+
+        x_sr = self.decoder2(x)
+        x_sr = F.interpolate(x_sr, size=self.hr_len, mode='linear', align_corners=False)
+        sr_recon = self.final_conv_sr(x_sr)
+
+        return lr_recon, sr_recon
 # EEG Dataset Class
 class EEGDataset(Dataset):
     def __init__(self, subject_ids, runs, project_path, add_noise=True):
