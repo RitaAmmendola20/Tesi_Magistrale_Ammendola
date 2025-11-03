@@ -424,3 +424,4 @@ if __name__ == '__main__':
     model_path = os.path.join(project_path, 'dcae_sr_eeg_motor_imagery_subpixel_n2_031125.pth')
     torch.save(model.state_dict(), model_path)
 
+

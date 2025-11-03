@@ -106,7 +106,6 @@ def evaluate_model(model, dataloader):
         'Segments': len(dataloader),
         'Parameters': sum(p.numel() for p in model.parameters() if p.requires_grad)
     }
-
 # ===============================
 # Main: carica modello + valuta
 # ===============================
