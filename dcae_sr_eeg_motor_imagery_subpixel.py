@@ -1,3 +1,6 @@
+'''
+Script che genera un modello addestrato su eegbci preprocessato, e lo salva in formato .pth
+'''
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -6,6 +9,8 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from scipy import signal
 import mne
+import mne.filter
+from mne.filter import resample
 from mne.datasets import eegbci
 import matplotlib.pyplot as plt
 import os
@@ -135,93 +140,117 @@ class DCAE_SR_SubPixel(nn.Module):
 # -----------------------------
 # EEG Dataset (unchanged)
 # -----------------------------
+# ===============================
+# EEGDatasetPreprocessed (NUOVA)
+# ===============================
 class EEGDataset(Dataset):
-    def __init__(self, subject_ids, runs, project_path, add_noise=True):
+    """
+    Dataset EEG preprocessato per Super-Resolution EEG (EEG BCI dataset).
+    Genera segmenti LR (50 Hz) e HR (500 Hz) sincronizzati.
+    """
+    def __init__(self, subject_ids, runs, project_path, add_noise=True, sr_factor=10):
         self.data_lr = []
         self.data_hr = []
         self.add_noise = add_noise
         self.project_path = project_path
+        self.sr_factor = sr_factor
 
         for subject in subject_ids:
             for run in runs:
-                # Define paths
-                download_path = os.path.join(
-                    os.path.dirname(project_path), 'MNE-eegbci-data', 'files', 'eegmmidb',
-                    '1.0.0', f'S{subject:03d}', f'S{subject:03d}R{run:02d}.edf'
-                )
+                # Percorso locale al file EDF
                 local_path = os.path.join(project_path, f'S{subject:03d}R{run:02d}.edf')
 
-                # Check if file exists locally
+                # Scarica il file se non esiste
                 if not os.path.exists(local_path):
-                    print(f"Local file {local_path} not found. Attempting to download...")
+                    print(f"Scarico S{subject:03d}R{run:02d}.edf...")
                     try:
-                        # Download the data if not present
-                        eegbci.load_data(subject, [run], path=os.path.dirname(os.path.dirname(project_path)), verbose=True)
-                        # Verify that the file was downloaded
-                        if not os.path.exists(download_path):
-                            print(f"Error: Failed to download {download_path}. Skipping run {run} for subject {subject}.")
-                            continue
-                        # Move the file to the local path
+                        eegbci.load_data(subject, [run], path=os.path.dirname(project_path), update_path=True)
+                        downloaded = os.path.join(
+                            os.path.dirname(project_path),
+                            'MNE-eegbci-data', 'files', 'eegmmidb', '1.0.0',
+                            f'S{subject:03d}', f'S{subject:03d}R{run:02d}.edf'
+                        )
                         os.makedirs(os.path.dirname(local_path), exist_ok=True)
-                        shutil.move(download_path, local_path)
-                        print(f"Successfully moved {download_path} to {local_path}")
+                        shutil.move(downloaded, local_path)
+                        print(f"Salvato in: {local_path}")
                     except Exception as e:
-                        print(f"Error downloading or moving file for subject {subject}, run {run}: {e}")
+                        print(f"Errore download: {e}")
                         continue
 
-                # Read and process the EDF file
+                # Carica e preprocessa
                 try:
-                    raw = mne.io.read_raw_edf(local_path, preload=True)
-                    raw.filter(0.5, 70, fir_design='firwin')
+                    raw = mne.io.read_raw_edf(local_path, preload=True, verbose=False)
+                    raw = self._preprocess_raw(raw)
                     data = raw.get_data()
+                    sfreq = raw.info['sfreq']
 
-                    hr_sf = 500
-                    orig_sf = raw.info['sfreq']
-                    num_samples_hr = int(data.shape[1] * (hr_sf / orig_sf))
+                    # ================================
+                    # 🔹 HR (500 Hz)
+                    # ================================
+                    sfreq_hr = 500.0
+                    num_samples_hr = int(data.shape[1] * (sfreq_hr / sfreq))
                     data_hr = signal.resample(data, num_samples_hr, axis=1)
-                    if data_hr.shape[1] > hr_window_length:
-                        data_hr = data_hr[:, :hr_window_length]
-                    elif data_hr.shape[1] < hr_window_length:
-                        padding = np.zeros((num_channels, hr_window_length - data_hr.shape[1]))
-                        data_hr = np.hstack((data_hr, padding))
+                    data_hr = data_hr[:, :120 * int(sfreq_hr)]  # max 120 sec
 
-                    lr_sf = 50
-                    num_samples_lr = int(hr_window_length * (lr_sf / hr_sf))
+                    # ================================
+                    # 🔹 LR (50 Hz)
+                    # ================================
+                    sfreq_lr = sfreq_hr / sr_factor  # 50 Hz
+                    num_samples_lr = int(data_hr.shape[1] * (sfreq_lr / sfreq_hr))
                     data_lr = signal.resample(data_hr, num_samples_lr, axis=1)
-                    if data_lr.shape[1] > lr_window_length:
-                        data_lr = data_lr[:, :lr_window_length]
-                    elif data_lr.shape[1] < lr_window_length:
-                        padding = np.zeros((num_channels, lr_window_length - data_lr.shape[1]))
-                        data_lr = np.hstack((data_lr, padding))
 
-                    if self.add_noise:
-                        for ch in range(data_lr.shape[0]):
-                            noise = np.random.normal(0, 0.1, data_lr.shape[1])
-                            data_lr[ch] += noise
+                    # ================================
+                    # 🔹 Segmentazione
+                    # ================================
+                    for start in range(0, data_lr.shape[1] - 250, 250):
+                        lr_seg = data_lr[:, start:start + 250]
+                        hr_seg = data_hr[:, start * sr_factor:start * sr_factor + 2500]
 
-                    for start in range(0, data_lr.shape[1] - lr_window_length + 1, lr_window_length):
-                        end_lr = start + lr_window_length
-                        end_hr = start + hr_window_length
-                        if end_lr <= data_lr.shape[1] and end_hr <= data_hr.shape[1]:
-                            self.data_lr.append(data_lr[:, start:end_lr])
-                            self.data_hr.append(data_hr[:, start:end_hr])
+                        # Normalizza (z-score per canale)
+                        lr_seg = self._zscore_per_channel(lr_seg)
+                        hr_seg = self._zscore_per_channel(hr_seg)
+
+                        if self.add_noise:
+                            lr_seg += np.random.normal(0, 0.05, lr_seg.shape)
+
+                        self.data_lr.append(lr_seg.astype(np.float32))
+                        self.data_hr.append(hr_seg.astype(np.float32))
+
                 except Exception as e:
-                    print(f"Error processing file {local_path}: {e}")
+                    print(f"⚠️ Errore elaborazione {local_path}: {e}")
                     continue
 
-        self.data_lr = np.array(self.data_lr)
-        self.data_hr = np.array(self.data_hr)
-        print(f"Number of segments created: {len(self.data_lr)}")
+        self.data_lr = np.array(self.data_lr, dtype=np.float32)
+        self.data_hr = np.array(self.data_hr, dtype=np.float32)
+        print(f"✅ Number of segments created: {len(self.data_lr)}")
 
+    # -------------------------------
+    # Preprocessing MNE
+    # -------------------------------
+    def _preprocess_raw(self, raw):
+        raw.pick_types(eeg=True, eog=False, stim=False)
+        raw.filter(1.0, 40.0, fir_design='firwin', verbose=False)
+        raw.notch_filter(50.0, fir_design='firwin', verbose=False)
+        raw.set_eeg_reference('average')
+        return raw
+
+    # -------------------------------
+    # Z-score per canale
+    # -------------------------------
+    def _zscore_per_channel(self, data):
+        for ch in range(data.shape[0]):
+            m, s = data[ch].mean(), data[ch].std()
+            data[ch] = (data[ch] - m) / (s + 1e-8)
+        return data
+
+    # -------------------------------
+    # Dataset interface
+    # -------------------------------
     def __len__(self):
         return len(self.data_lr)
 
     def __getitem__(self, idx):
-        return torch.tensor(self.data_lr[idx], dtype=torch.float32), torch.tensor(self.data_hr[idx], dtype=torch.float32)
-# dcae_sr_eeg_motor_imagery_subpixel.py
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+        return torch.tensor(self.data_lr[idx]), torch.tensor(self.data_hr[idx])
 
 class SubPixel1D(nn.Module):
     def __init__(self, in_channels, out_channels, upscale_factor):
@@ -366,7 +395,7 @@ def train_model(model, dataloader, epochs=20):
 # -----------------------------
 # Example usage
 # -----------------------------
-'''
+
 if __name__ == '__main__':
     dataset = EEGDataset(subject_ids=[1], runs=[1, 2], project_path=project_path)
     if len(dataset) == 0:
@@ -392,6 +421,6 @@ if __name__ == '__main__':
     plt.ylabel('Amplitude')
     plt.show()
 
-    model_path = os.path.join(project_path, 'dcae_sr_eeg_motor_imagery_subpixel.pth')
+    model_path = os.path.join(project_path, 'dcae_sr_eeg_motor_imagery_subpixel_n2_031125.pth')
     torch.save(model.state_dict(), model_path)
-'''
+

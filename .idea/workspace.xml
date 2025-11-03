@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3b6692a-aaf8-4d8c-913c-85a02c8dbecb" name="Changes" comment="commit 1: 27-10-25" />
+    <list default="true" id="c3b6692a-aaf8-4d8c-913c-85a02c8dbecb" name="Changes" comment="commit 1: 27-10-25">
+      <change afterPath="$PROJECT_DIR$/model_tester.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pixel_model_metrics_evaluation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/standard_model_metrics_evaluation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery.py" beforeDir="false" afterPath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery_subpixel.py" beforeDir="false" afterPath="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery_subpixel.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,17 +51,28 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.dcae_sr_eeg_motor_imagery.executor": "Run",
+    "Python.dcae_sr_eeg_motor_imagery_subpixel.executor": "Run",
     "Python.main.executor": "Run",
     "Python.main2.executor": "Run",
     "Python.metrics_calculator.executor": "Run",
+    "Python.model_metrics_evaluation.executor": "Run",
+    "Python.model_tester.executor": "Run",
     "Python.pixelshuffle_batch_generator (1).executor": "Run",
+    "Python.standard_model_metrics_evaluation.executor": "Run",
     "Python.standard_sr_batch_generator.executor": "Run",
+    "Python.test1.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.metrics_calculator">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola\descarded_models" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.dcae_sr_eeg_motor_imagery_subpixel">
     <configuration name="dcae_sr_eeg_motor_imagery_subpixel" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tesi_Magistrale_Ammendola" />
       <option name="ENV_FILES" value="" />
@@ -67,7 +86,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola\dcae_sr_eeg_motor_imagery_subpixel.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dcae_sr_eeg_motor_imagery_subpixel.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -76,7 +95,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="metrics_calculator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="model_tester" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tesi_Magistrale_Ammendola" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -89,7 +108,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/metrics_calculator.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/model_tester.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -98,7 +117,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pixelshuffle_batch_generator (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pixel_model_metrics_evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tesi_Magistrale_Ammendola" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -111,7 +130,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pixelshuffle_batch_generator.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola\pixel_model_metrics_evaluation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -120,7 +139,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pixelshuffle_batch_generator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="standard_model_metrics_evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tesi_Magistrale_Ammendola" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -133,7 +152,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola\pixelshuffle_batch_generator.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/standard_model_metrics_evaluation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -142,7 +161,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="standard_sr_batch_generator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tesi_Magistrale_Ammendola" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -155,7 +174,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/standard_sr_batch_generator.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -166,11 +185,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.metrics_calculator" />
-        <item itemvalue="Python.pixelshuffle_batch_generator (1)" />
-        <item itemvalue="Python.standard_sr_batch_generator" />
-        <item itemvalue="Python.pixelshuffle_batch_generator" />
         <item itemvalue="Python.dcae_sr_eeg_motor_imagery_subpixel" />
+        <item itemvalue="Python.standard_model_metrics_evaluation" />
+        <item itemvalue="Python.pixel_model_metrics_evaluation" />
+        <item itemvalue="Python.model_tester" />
+        <item itemvalue="Python.test1" />
       </list>
     </recent_temporary>
   </component>
@@ -238,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761581248298</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="commit 1: 27-10-25">
+      <option name="closed" value="true" />
+      <created>1761581574243</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1761581574243</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
