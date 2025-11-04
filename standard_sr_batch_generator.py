@@ -1,7 +1,6 @@
 # Initialize dataset and dataloader
-import dcae_sr_eeg_motor_imagery as util_sd
+from descarded_code import dcae_sr_eeg_motor_imagery as util_sd
 import os
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 

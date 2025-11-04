@@ -1,6 +1,4 @@
-import dcae_sr_eeg_motor_imagery_subpixel as util
-import os
-import numpy as np
+from descarded_code import dcae_sr_eeg_motor_imagery_subpixel as util
 import pandas as pd
 import matplotlib.pyplot as plt
 

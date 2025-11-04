@@ -8,8 +8,8 @@ from scipy import signal
 import os
 from sklearn.model_selection import train_test_split
 import time
-import dcae_sr_eeg_motor_imagery_subpixel as util_pixel
-import dcae_sr_eeg_motor_imagery as util_sd
+import standard_model_generator as util_sd
+import pixel_model_generator as util_pixel
 from pandas import DataFrame
 from tabulate import tabulate
 from tqdm import tqdm

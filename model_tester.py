@@ -1,17 +1,17 @@
 from scipy.stats import ttest_rel
 from skimage.metrics import structural_similarity as ssim
 from sklearn.metrics import r2_score, mean_squared_error
-from dcae_sr_eeg_motor_imagery_subpixel import *
-from dcae_sr_eeg_motor_imagery import *
+import standard_model_generator as util_sd
+import pixel_model_generator as util_pixel
 from tqdm import tqdm  # <--- BARRA DI PROGRESSO
 
 
 # ===============================
 # Config
 # ===============================
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = util_sd.torch.device('cuda' if util_sd.torch.cuda.is_available() else 'cpu')
 project_path = r"C:\Users\RITA\OneDrive\Desktop\Tesi_Magistrale_Ammendola"
-model_path = os.path.join(project_path, "dcae_sr_eeg_motor_imagery_subpixel_n1_031125.pth")
+model_path = util_sd.os.path.join(project_path, "dcae_sr_eeg_motor_imagery_subpixel_n1_031125.pth")
 num_channels = 64
 
 
@@ -23,8 +23,8 @@ def compute_metrics(hr_true, sr_pred):
     sr_pred = sr_pred.flatten()
 
     mse = mean_squared_error(hr_true, sr_pred)
-    rmse = np.sqrt(mse)
-    psnr = 20 * np.log10(np.max(np.abs(hr_true)) / (np.sqrt(mse) + 1e-8))  # evita div 0
+    rmse = util_sd.np.sqrt(mse)
+    psnr = 20 * util_sd.np.log10(util_sd.np.max(util_sd.np.abs(hr_true)) / (util_sd.np.sqrt(mse) + 1e-8))  # evita div 0
     r2 = r2_score(hr_true, sr_pred)
     data_range = hr_true.max() - hr_true.min()
     ssim_val = ssim(hr_true, sr_pred, data_range=data_range if data_range > 0 else 1.0)
@@ -44,15 +44,15 @@ def compute_metrics(hr_true, sr_pred):
 # Carica modello
 # ===============================
 print(f"Caricamento modello da: {model_path}")
-model = DCAE_SR_SubPixel(num_channels=num_channels).to(device)
-model.load_state_dict(torch.load(model_path, map_location=device))
+model = util_pixel.DCAE_SR_SubPixel(num_channels=num_channels).to(device)
+model.load_state_dict(util_pixel.torch.load(model_path, map_location=device))
 model.eval()
 
 # ===============================
 # Dataset di test
 # ===============================
-test_dataset = EEGDataset(subject_ids=[1], runs=[3], project_path=project_path, add_noise=False)
-test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
+test_dataset = util_pixel.EEGDataset(subject_ids=[1], runs=[3], project_path=project_path, add_noise=False)
+test_loader = util_pixel.DataLoader(test_dataset, batch_size=1, shuffle=False)
 
 print(f"Numero di segmenti nel test: {len(test_dataset)}")
 
@@ -67,7 +67,7 @@ print("Inizio valutazione...")
 for i, (lr_input, hr_target) in enumerate(tqdm(test_loader, desc="Test Progress", unit="seg")):
     lr_input, hr_target = lr_input.to(device), hr_target.to(device)
 
-    with torch.no_grad():
+    with util_pixel.torch.no_grad():
         _, sr_output = model(lr_input)
 
     hr_true = hr_target.cpu().numpy()[0]  # [64, 2500]
@@ -84,24 +84,24 @@ for i, (lr_input, hr_target) in enumerate(tqdm(test_loader, desc="Test Progress"
 
     # --- Plot solo del primo ---
     if first_plot:
-        plt.figure(figsize=(12, 5))
-        plt.plot(hr_true[0], label='HR Ground Truth', alpha=0.8)
-        plt.plot(sr_pred[0], label='SR Reconstructed', alpha=0.7)
-        plt.title(f'EEG SR Reconstruction - Segmento {i + 1} (Canale 0)')
-        plt.xlabel('Campioni (500 Hz)')
-        plt.ylabel('Ampiezza (z-score)')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        util_pixel.plt.figure(figsize=(12, 5))
+        util_pixel.plt.plot(hr_true[0], label='HR Ground Truth', alpha=0.8)
+        util_pixel.plt.plot(sr_pred[0], label='SR Reconstructed', alpha=0.7)
+        util_pixel.plt.title(f'EEG SR Reconstruction - Segmento {i + 1} (Canale 0)')
+        util_pixel.plt.xlabel('Campioni (500 Hz)')
+        util_pixel.plt.ylabel('Ampiezza (z-score)')
+        util_pixel.plt.legend()
+        util_pixel.plt.grid(True, alpha=0.3)
+        util_pixel.plt.tight_layout()
+        util_pixel.plt.show()
         first_plot = False
 
 # ===============================
 # Media finale
 # ===============================
 if all_metrics:
-    mean_metrics = {k: np.mean([m[k] for m in all_metrics]) for k in all_metrics[0].keys()}
-    std_metrics = {k: np.std([m[k] for m in all_metrics]) for k in all_metrics[0].keys()}
+    mean_metrics = {k: util_pixel.np.mean([m[k] for m in all_metrics]) for k in all_metrics[0].keys()}
+    std_metrics = {k: util_pixel.np.std([m[k] for m in all_metrics]) for k in all_metrics[0].keys()}
 
     print("\n" + "=" * 50)
     print("RISULTATI MEDI SUL TEST SET")
